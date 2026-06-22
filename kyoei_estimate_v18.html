@@ -1,0 +1,1517 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans JP',sans-serif;font-size:14px;color:#222;background:#f0f0ec}
+.app{min-height:600px}
+.topbar{background:#1a3a6b;padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.topbar-title{font-size:15px;font-weight:500;color:#fff;display:flex;align-items:center;gap:8px;letter-spacing:.03em}
+.saved-badge{font-size:11px;color:#7ecfa0;display:flex;align-items:center;gap:4px;opacity:0;transition:opacity .4s}
+.saved-badge.show{opacity:1}
+.nav-tabs{background:#1d4480;display:flex;gap:0;padding:0 10px}
+.tab{padding:10px 18px;font-size:13px;cursor:pointer;border-bottom:3px solid transparent;color:rgba(255,255,255,.65);transition:all .18s;white-space:nowrap;letter-spacing:.02em}
+.tab.active{color:#fff;border-bottom-color:#f0c040}
+.tab:hover:not(.active){color:#fff;background:rgba(255,255,255,.08)}
+.content{padding:16px}
+.card{background:#fff;border:1px solid #c8d4e8;border-radius:10px;padding:0;margin-bottom:16px;box-shadow:0 2px 8px rgba(26,58,107,.07);overflow:hidden}
+.card-head{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(90deg,#1a3a6b 0%,#2a5298 100%);padding:10px 16px;letter-spacing:.04em}
+.card-head i{font-size:16px;opacity:.9}
+.card-body{padding:18px 18px 14px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:0}
+.form-group.full{grid-column:1/-1}
+label{font-size:11px;color:#fff;font-weight:600;letter-spacing:.06em;background:#3a6abf;display:inline-block;padding:3px 10px 3px 10px;border-radius:4px 4px 0 0;width:fit-content;margin-bottom:0;line-height:1.6}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:8px 11px;font-size:13px;border:2px solid #b8c8e0;border-radius:0 6px 6px 6px;background:#f8fafd;color:#1a2a44;font-family:inherit;transition:border-color .15s,background .15s;line-height:1.5}
+textarea{resize:vertical;min-height:60px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#1a3a6b;background:#fff;box-shadow:0 0 0 3px rgba(26,58,107,.1)}
+.btn{padding:7px 16px;font-size:13px;border-radius:6px;cursor:pointer;border:1px solid #c8d4e0;background:#fff;color:#333;display:inline-flex;align-items:center;gap:6px;font-family:inherit;transition:all .15s;font-weight:500}
+.btn:hover{background:#f0f4f9;border-color:#1a3a6b}
+.btn.primary{background:#1a3a6b;color:#fff;border-color:#1a3a6b}
+.btn.primary:hover{background:#0f2550}
+.btn.pdf{background:#c0392b;color:#fff;border-color:#c0392b}
+.btn.pdf:hover{background:#a93226}
+.btn.danger{color:#c0392b;border-color:transparent;background:transparent}
+.btn.danger:hover{background:#fdf0ef}
+.btn.sm{padding:4px 10px;font-size:11px}
+
+/* New type selector buttons */
+.type-select-area{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:8px}
+.type-btn-big{background:#fff;border:2px solid #c8d4e0;border-radius:12px;padding:22px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;transition:all .2s;font-family:inherit}
+.type-btn-big:hover{border-color:#1a3a6b;background:#f0f4fc;transform:translateY(-2px);box-shadow:0 4px 12px rgba(26,58,107,.12)}
+.type-btn-big .icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.type-btn-big .label{font-size:14px;font-weight:500;color:#1a3a6b}
+.type-btn-big .desc{font-size:11px;color:#888;text-align:center;line-height:1.5}
+.type-btn-big.shio .icon{background:#e8f0fa;color:#1a3a6b}
+.type-btn-big.nai .icon{background:#e8f5ee;color:#1b6b3a}
+.type-btn-big.kaisou .icon{background:#fdf0e8;color:#6b3a1a}
+.type-btn-big.shio{border-color:#b5cce8}
+.type-btn-big.nai{border-color:#a0d4b5}
+.type-btn-big.kaisou{border-color:#e0b88a}
+
+.item-table{width:100%;border-collapse:collapse;font-size:13px}
+.item-table thead tr{background:#1a3a6b}
+.item-table th{padding:8px 8px;text-align:left;font-weight:500;font-size:12px;color:#fff;border:1px solid #1a3a6b}
+.item-table tbody tr:nth-child(even){background:#f5f8fc}
+.item-table tbody tr:hover{background:#eaf0fa}
+.item-table td{padding:4px 4px;border:1px solid #9fb3cc;vertical-align:middle;background:#fff}
+.item-table tbody tr:nth-child(even) td{background:#f5f8fc}
+.item-table input{border:2px solid #b8c8e0;background:#f8fafd;width:100%;padding:5px 7px;font-size:13px;color:#1a2a44;font-family:inherit;border-radius:4px}
+.item-table input:focus{background:#fff;border-color:#1a3a6b;outline:none;box-shadow:0 0 0 2px rgba(26,58,107,.12)}
+.total-wrap{display:flex;justify-content:flex-end;margin-top:12px}
+.total-box{background:#1a3a6b;border-radius:8px;padding:12px 20px;min-width:220px}
+.total-row{display:flex;justify-content:space-between;gap:24px;padding:3px 0;font-size:13px;color:rgba(255,255,255,.8)}
+.total-row.grand{font-size:16px;font-weight:500;border-top:1px solid rgba(255,255,255,.3);margin-top:6px;padding-top:8px;color:#f0c040}
+.list-panel{display:flex;flex-direction:column;gap:8px}
+.est-card{background:#fff;border:1px solid #d4dce8;border-radius:8px;padding:13px 15px;cursor:pointer;transition:all .18s;display:flex;justify-content:space-between;align-items:center}
+.est-card:hover{border-color:#1a3a6b;box-shadow:0 2px 8px rgba(26,58,107,.1)}
+.est-card.sel{border-color:#1a3a6b;border-width:2px;background:#f0f4fc}
+.badge{font-size:11px;padding:3px 10px;border-radius:99px;font-weight:600;letter-spacing:.03em;display:inline-flex;align-items:center;gap:3px}
+.b-shio{background:#dce8f8;color:#1a3a6b;border:1px solid #b5cce8}
+.b-nai{background:#d8f0e3;color:#1b6b3a;border:1px solid #8dd4ab}
+.b-kaisou{background:#fde8d0;color:#8a3a00;border:1px solid #e0aa70}
+.empty{text-align:center;padding:48px 20px;color:#888}
+.empty i{font-size:36px;display:block;margin-bottom:10px;opacity:.3}
+.pdf-preview{background:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+
+#addReceivedModal{display:none}
+@media print{
+  body{background:#fff!important;margin:0!important;padding:0!important}
+  .app,.content{padding:0!important}
+  .topbar,.nav-tabs,.no-print{display:none!important}
+  .print-doc{display:block!important;margin:0;padding:0}
+  .print-doc-inner{box-shadow:none!important;border:none!important}
+  @page{size:A4 portrait;margin:0}
+  #printArea{
+    position:fixed;top:0;left:0;
+    width:210mm;height:297mm;
+    overflow:hidden;
+    background:#fff;
+  }
+}
+.print-doc{display:none}
+.print-doc-inner{background:#fff;padding:56px 62px;box-sizing:border-box}
+
+/* PDF layout */
+.doc-title-center{text-align:center;font-size:22pt;font-weight:500;letter-spacing:.25em;padding:14px 0 10px;border-bottom:3px double #1a3a6b;margin-bottom:14px;color:#1a3a6b}
+.doc-no-row{display:flex;justify-content:flex-end;gap:20px;font-size:11px;color:#555;margin-bottom:10px}
+.doc-no-row span{font-weight:500;color:#222}
+.doc-party{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1.5px solid #1a3a6b;margin-bottom:0}
+.party-left{padding:14px 18px;border-right:1.5px solid #1a3a6b}
+.party-right{padding:14px 18px;background:#f0f4fc;display:flex;flex-direction:column;gap:0}
+.party-label{font-size:9px;color:#5a6a82;letter-spacing:.05em;margin-bottom:4px;font-weight:500;text-transform:uppercase}
+.customer-name{font-size:16pt;font-weight:500;border-bottom:1.5px solid #1a3a6b;padding-bottom:6px;margin-bottom:8px}
+.greeting{font-size:10px;color:#444;line-height:1.9}
+.company-name{font-size:13pt;font-weight:500;color:#1a3a6b}
+.company-sub{font-size:9px;color:#555;line-height:2;margin-top:3px;margin-bottom:10px}
+.stamp-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid #bcd;margin-top:4px}
+.stamp-cell{text-align:center;padding:4px 0;font-size:9px;color:#5a6a82;border-right:1px solid #bcd}
+.stamp-cell:last-child{border-right:none}
+.stamp-box{height:32px;border-top:1px solid #bcd;margin-top:2px;font-size:12px;color:#333;display:flex;align-items:center;justify-content:center}
+.conditions-band{background:#f0f4fc;border:1.5px solid #1a3a6b;border-top:none;padding:10px 18px;display:grid;grid-template-columns:1fr 1fr;gap:4px 30px}
+.cond-row{display:flex;gap:8px;font-size:11px;padding:3px 0;border-bottom:.5px solid rgba(26,58,107,.15)}
+.cond-key{color:#1a3a6b;font-weight:500;min-width:82px;flex-shrink:0}
+.cond-val{color:#333}
+.items-section{margin-top:14px}
+.items-title{background:#1a3a6b;color:#fff;font-size:11px;font-weight:500;padding:5px 12px;letter-spacing:.05em}
+.items-table{width:100%;border-collapse:collapse;font-size:11px}
+.items-table th{background:#2d5aa0;color:#fff;padding:7px 10px;text-align:left;border:1px solid #1a3a6b;font-weight:500}
+.items-table th.right{text-align:right}
+.items-table td{padding:7px 10px;border:1px solid #c8d4e8}
+.items-table td.right{text-align:right}
+.items-table tr:nth-child(even) td{background:#f5f8fc}
+.total-section{border:1.5px solid #1a3a6b;border-top:none}
+.total-inner{display:flex;justify-content:flex-end;padding:10px 18px}
+.total-grid{display:grid;grid-template-columns:130px 120px;font-size:11px}
+.total-grid .tk{color:#1a3a6b;font-weight:500;padding:3px 0;border-bottom:.5px solid #c8d4e8}
+.total-grid .tv{text-align:right;padding:3px 0;border-bottom:.5px solid #c8d4e8}
+.total-grid .grand-k{font-size:14px;font-weight:500;color:#1a3a6b;padding:6px 0 2px;border-bottom:none}
+.total-grid .grand-v{font-size:14px;font-weight:500;color:#1a3a6b;text-align:right;padding:6px 6px 2px;border-bottom:none;background:#f0f4fc}
+.remarks-section{margin-top:12px;padding:10px 14px;background:#fffdf0;border:1px solid #e0d08a;border-radius:4px;font-size:10px;color:#555;line-height:1.8}
+.kaisou-section{margin-top:12px;border:1.5px solid #1a3a6b}
+.kaisou-section-title{background:#1a3a6b;color:#fff;font-size:11px;font-weight:500;padding:5px 12px}
+.kaisou-row{display:flex;gap:0;border-bottom:1px solid #c8d4e8;font-size:11px}
+.kaisou-row:last-child{border-bottom:none}
+.kaisou-key{background:#f0f4fc;color:#1a3a6b;font-weight:500;width:110px;padding:7px 10px;border-right:1.5px solid #c8d4e8;border-bottom:1px solid #c8d4e8;vertical-align:top}
+.kaisou-val{padding:7px 10px;color:#333;line-height:1.7;border-bottom:1px solid #c8d4e8;vertical-align:top}
+.kaisou-section table tr:last-child .kaisou-key,
+.kaisou-section table tr:last-child .kaisou-val{border-bottom:none}
+
+/* ── レスポンシブ対応 ── */
+@media(max-width:640px){
+  /* ナビタブ：折り返し許可 */
+  .nav-tabs{flex-wrap:wrap;padding:0 4px}
+  .tab{padding:8px 10px;font-size:12px}
+
+  /* コンテンツの余白を縮小 */
+  .content{padding:10px 8px}
+
+  /* カード内パディング縮小 */
+  .card-body{padding:12px 10px 10px}
+
+  /* 2列グリッド→1列 */
+  .form-grid{grid-template-columns:1fr}
+  /* 3列グリッド→1列 */
+  .form-grid-3{grid-template-columns:1fr}
+
+  /* 種別選択ボタン：縦並び */
+  .type-select-area{grid-template-columns:1fr}
+
+  /* 品目テーブル：横スクロール */
+  .item-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .item-table{min-width:520px}
+
+  /* 合計ボックス：全幅 */
+  .total-wrap{justify-content:stretch}
+  .total-box{min-width:unset;width:100%}
+
+  /* 見積カード：縦並び */
+  .est-card{flex-direction:column;align-items:flex-start;gap:10px}
+  .est-card > div:last-child{width:100%;flex-direction:row;flex-wrap:wrap;justify-content:flex-end}
+
+  /* 受領書・納品書の2カラム→1カラム */
+  .doc-split{grid-template-columns:1fr !important}
+  .doc-split-list{max-height:200px !important}
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.8.0/dist/tabler-icons.min.css" rel="stylesheet">
+
+<!-- ログイン画面 -->
+<div id="loginScreen" style="display:flex;position:fixed;inset:0;background:linear-gradient(135deg,#0f2550 0%,#1a3a6b 50%,#2a5298 100%);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:40px 36px;width:360px;max-width:92vw;box-shadow:0 16px 48px rgba(0,0,0,.3)">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:22px;font-weight:600;color:#1a3a6b;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px"><i class="ti ti-building-store"></i>共栄商事</div>
+      <div style="font-size:13px;color:#5a6a82">見積管理システム</div>
+    </div>
+    <div style="margin-bottom:14px">
+      <label style="font-size:11px;color:#fff;font-weight:600;letter-spacing:.06em;background:#3a6abf;display:inline-block;padding:3px 10px;border-radius:4px 4px 0 0">メールアドレス（ID）</label>
+      <input type="text" id="loginId" placeholder="例：yamada@kyoeishoji.co.jp" style="width:100%;padding:8px 11px;font-size:13px;border:2px solid #b8c8e0;border-radius:0 6px 6px 6px;background:#f8fafd;color:#1a2a44;font-family:inherit" onkeydown="if(event.key==='Enter')document.getElementById('loginPw').focus()">
+    </div>
+    <div style="margin-bottom:18px">
+      <label style="font-size:11px;color:#fff;font-weight:600;letter-spacing:.06em;background:#3a6abf;display:inline-block;padding:3px 10px;border-radius:4px 4px 0 0">パスワード</label>
+      <input type="password" id="loginPw" placeholder="パスワードを入力" style="width:100%;padding:8px 11px;font-size:13px;border:2px solid #b8c8e0;border-radius:0 6px 6px 6px;background:#f8fafd;color:#1a2a44;font-family:inherit" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div id="loginErr" style="color:#c0392b;font-size:12px;margin-bottom:10px;min-height:16px;text-align:center"></div>
+    <button onclick="doLogin()" style="width:100%;padding:11px;background:#1a3a6b;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-login"></i>ログイン</button>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none">
+  <div class="topbar no-print">
+    <div class="topbar-title"><i class="ti ti-building-store" style="font-size:18px"></i>共栄商事　見積管理システム</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="saved-badge" id="savedBadge"><i class="ti ti-check"></i>自動保存しました</span>
+      <span id="userLabel" style="font-size:12px;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:4px"><i class="ti ti-user" style="font-size:13px"></i></span>
+      <button onclick="logout()" style="font-size:11px;padding:4px 10px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px"><i class="ti ti-logout" style="font-size:12px"></i>ログアウト</button>
+    </div>
+  </div>
+  <div class="nav-tabs no-print" id="navTabs">
+    <div class="tab active" onclick="sw('list')"><i class="ti ti-list-details" style="margin-right:4px"></i>見積一覧</div>
+    <div class="tab" onclick="S.editData=null;S.readOnly=false;S.selIdx=null;sw('new')"><i class="ti ti-plus" style="margin-right:4px"></i>新規作成</div>
+    <div class="tab" onclick="sw('receipt')"><i class="ti ti-receipt" style="margin-right:4px"></i>受領書</div>
+    <div class="tab" onclick="sw('delivery')"><i class="ti ti-truck-delivery" style="margin-right:4px"></i>納品書</div>
+    <div class="tab" onclick="sw('received')"><i class="ti ti-inbox" style="margin-right:4px"></i>受領見積書</div>
+    <div class="tab" onclick="sw('help')"><i class="ti ti-help-circle" style="margin-right:4px"></i>操作手順</div>
+    <div class="tab" id="adminTabWrap" style="display:none" onclick="sw('admin')"><i class="ti ti-shield" style="margin-right:4px"></i>管理者</div>
+    <div class="tab" onclick="sw('settings')"><i class="ti ti-settings" style="margin-right:4px"></i>設定</div>
+  </div>
+  <div class="content" id="main"></div>
+</div>
+<div class="print-doc" id="printArea"></div>
+
+<script>
+const CO={name:'共栄商事株式会社',addr:'福岡県北九州市小倉北区西港町111-2',tel:'TEL 093(581)5688　FAX 093(581)5013'};
+let S={tab:'list',estimates:[],editData:null,selIdx:null,readOnly:false,receivedEstimates:[],searchRQ:''};
+
+// ── 認証 ──────────────────────────────────────────────────────
+const ADMIN_ID='sasaki-t@kyoeishoji.co.jp';
+const ADMIN_PW='S2582t3254';
+let AUTH={loggedIn:false,currentUser:null,isAdmin:false};
+
+function loadUsers(){
+  try{const u=localStorage.getItem('kyoei_users');return u?JSON.parse(u):[];}catch(e){return[];}
+}
+function saveUsers(users){
+  try{localStorage.setItem('kyoei_users',JSON.stringify(users));}catch(e){}
+}
+function getUsers(){return loadUsers();}
+
+function tryLogin(id,pw){
+  if(id===ADMIN_ID&&pw===ADMIN_PW){
+    AUTH={loggedIn:true,currentUser:{id:ADMIN_ID,name:'管理者（佐々木 拓也）'},isAdmin:true};
+    return true;
+  }
+  const users=loadUsers();
+  const u=users.find(u=>u.id===id&&u.pw===pw);
+  if(u){
+    AUTH={loggedIn:true,currentUser:u,isAdmin:false};
+    return true;
+  }
+  return false;
+}
+function logout(){
+  AUTH={loggedIn:false,currentUser:null,isAdmin:false};
+  showLogin();
+}
+
+function showLogin(){
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginErr').textContent='';
+  document.getElementById('loginId').value='';
+  document.getElementById('loginPw').value='';
+}
+function hideLogin(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('app').style.display='';
+}
+function doLogin(){
+  const id=document.getElementById('loginId').value.trim();
+  const pw=document.getElementById('loginPw').value;
+  if(!id||!pw){document.getElementById('loginErr').textContent='IDとパスワードを入力してください';return;}
+  if(tryLogin(id,pw)){
+    hideLogin();
+    // ヘッダーにユーザー名表示
+    document.getElementById('userLabel').textContent=AUTH.currentUser.name||AUTH.currentUser.id;
+    document.getElementById('adminTabWrap').style.display=AUTH.isAdmin?'':'none';
+    ld();render();
+  }else{
+    document.getElementById('loginErr').textContent='IDまたはパスワードが正しくありません';
+  }
+}
+
+// ── 管理者画面 ──────────────────────────────────────────────
+function renderAdmin(){
+  const users=getUsers();
+  const rows=users.length?users.map((u,i)=>`
+    <tr>
+      <td style="padding:8px 12px;border-bottom:1px solid #e0e8f4">${u.id}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #e0e8f4">${u.name||'―'}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #e0e8f4;text-align:center">
+        <button class="btn sm danger" onclick="delUser(${i})"><i class="ti ti-trash"></i>削除</button>
+        <button class="btn sm" onclick="resetPwPrompt(${i})" style="margin-left:4px"><i class="ti ti-key"></i>PW変更</button>
+      </td>
+    </tr>`).join('')
+  :'<tr><td colspan="3" style="padding:20px;text-align:center;color:#aaa">ユーザーがいません</td></tr>';
+
+  return`<div style="max-width:680px;margin:0 auto">
+    <div class="card">
+      <div class="card-head"><i class="ti ti-users"></i>ユーザー管理</div>
+      <div class="card-body">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead><tr style="background:#f0f4fc">
+            <th style="padding:8px 12px;text-align:left;color:#1a3a6b;font-weight:600;border-bottom:2px solid #c8d4e8">メールアドレス（ID）</th>
+            <th style="padding:8px 12px;text-align:left;color:#1a3a6b;font-weight:600;border-bottom:2px solid #c8d4e8">氏名</th>
+            <th style="padding:8px 12px;text-align:center;color:#1a3a6b;font-weight:600;border-bottom:2px solid #c8d4e8">操作</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><i class="ti ti-user-plus"></i>新規ユーザー追加</div>
+      <div class="card-body">
+        <div class="form-grid" style="margin-bottom:12px">
+          <div class="form-group"><label>メールアドレス（ID）</label><input type="text" id="newUserId" placeholder="例：solt@kyoeishoji.co.jp"></div>
+          <div class="form-group"><label>氏名</label><input type="text" id="newUserName" placeholder="例：共栄 太郎"></div>
+        </div>
+        <div class="form-grid" style="margin-bottom:12px">
+          <div class="form-group"><label>パスワード</label><input type="password" id="newUserPw" placeholder="パスワードを入力"></div>
+          <div class="form-group"><label>パスワード（確認）</label><input type="password" id="newUserPw2" placeholder="もう一度入力"></div>
+        </div>
+        <div id="addUserErr" style="color:#c0392b;font-size:12px;margin-bottom:8px"></div>
+        <button class="btn primary" onclick="addUser()"><i class="ti ti-plus"></i>追加する</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function addUser(){
+  const id=document.getElementById('newUserId').value.trim();
+  const name=document.getElementById('newUserName').value.trim();
+  const pw=document.getElementById('newUserPw').value;
+  const pw2=document.getElementById('newUserPw2').value;
+  const err=document.getElementById('addUserErr');
+  if(!id||!pw){err.textContent='IDとパスワードは必須です';return;}
+  if(pw!==pw2){err.textContent='パスワードが一致しません';return;}
+  if(id===ADMIN_ID){err.textContent='管理者IDは使用できません';return;}
+  const users=getUsers();
+  if(users.find(u=>u.id===id)){err.textContent='このIDはすでに登録されています';return;}
+  users.push({id,name,pw});
+  saveUsers(users);
+  err.textContent='';
+  render();
+}
+function delUser(i){
+  if(!confirm('このユーザーを削除しますか？'))return;
+  const users=getUsers();
+  users.splice(i,1);
+  saveUsers(users);
+  render();
+}
+function resetPwPrompt(i){
+  const users=getUsers();
+  const u=users[i];
+  const pw=prompt(`「${u.name||u.id}」の新しいパスワードを入力してください`);
+  if(pw===null)return;
+  if(!pw){alert('パスワードを入力してください');return;}
+  users[i].pw=pw;
+  saveUsers(users);
+  alert('パスワードを変更しました');
+}
+// ────────────────────────────────────────────────────────────
+
+// ── 設定画面（パスワード変更） ──────────────────────────────
+function renderSettings(){
+  const isAdmin=AUTH.isAdmin;
+  return`<div style="max-width:480px;margin:0 auto">
+    <div class="card">
+      <div class="card-head"><i class="ti ti-lock"></i>パスワード変更</div>
+      <div class="card-body">
+        <div style="font-size:12px;color:#5a6a82;margin-bottom:16px;padding:8px 12px;background:#f0f4fc;border-radius:6px;display:flex;align-items:center;gap:6px">
+          <i class="ti ti-user" style="font-size:14px;color:#1a3a6b"></i>
+          <span>ログイン中：<strong>${AUTH.currentUser.name||AUTH.currentUser.id}</strong>（${AUTH.currentUser.id}）</span>
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label>現在のパスワード</label>
+          <input type="password" id="curPw" placeholder="現在のパスワードを入力">
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label>新しいパスワード</label>
+          <input type="password" id="newPw" placeholder="新しいパスワードを入力">
+        </div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label>新しいパスワード（確認）</label>
+          <input type="password" id="newPw2" placeholder="もう一度入力">
+        </div>
+        <div id="pwChangeMsg" style="font-size:12px;min-height:18px;margin-bottom:10px"></div>
+        <button class="btn primary" onclick="doChangePw()"><i class="ti ti-device-floppy"></i>変更する</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function doChangePw(){
+  const cur=document.getElementById('curPw').value;
+  const nw=document.getElementById('newPw').value;
+  const nw2=document.getElementById('newPw2').value;
+  const msg=document.getElementById('pwChangeMsg');
+  if(!cur||!nw||!nw2){msg.style.color='#c0392b';msg.textContent='すべての項目を入力してください';return;}
+  if(nw!==nw2){msg.style.color='#c0392b';msg.textContent='新しいパスワードが一致しません';return;}
+  if(nw.length<4){msg.style.color='#c0392b';msg.textContent='パスワードは4文字以上にしてください';return;}
+  // 管理者の場合
+  if(AUTH.isAdmin){
+    if(cur!==ADMIN_PW){msg.style.color='#c0392b';msg.textContent='現在のパスワードが正しくありません';return;}
+    // 管理者PWはHTMLハードコードのため変更不可
+    msg.style.color='#c0392b';msg.textContent='管理者パスワードはシステム管理者に変更を依頼してください';return;
+  }
+  // 一般ユーザーの場合
+  const users=getUsers();
+  const idx=users.findIndex(u=>u.id===AUTH.currentUser.id);
+  if(idx===-1){msg.style.color='#c0392b';msg.textContent='ユーザー情報が見つかりません';return;}
+  if(users[idx].pw!==cur){msg.style.color='#c0392b';msg.textContent='パスワードが正しくありません';return;}
+  users[idx].pw=nw;
+  saveUsers(users);
+  document.getElementById('curPw').value='';
+  document.getElementById('newPw').value='';
+  document.getElementById('newPw2').value='';
+  msg.style.color='#1b6b3a';msg.textContent='✓ パスワードを変更しました';
+}
+// ────────────────────────────────────────────────────────────
+
+function autoGrow(el){el.style.height="auto";el.style.height=el.scrollHeight+"px";}
+function ld(){try{const d=localStorage.getItem('kyoei3');if(d)S.estimates=JSON.parse(d);}catch(e){}
+  try{const r=localStorage.getItem('kyoei3r');if(r)S.receivedEstimates=JSON.parse(r);}catch(e){}}
+function sv(){try{localStorage.setItem('kyoei3',JSON.stringify(S.estimates));showSaved();}catch(e){}}
+function svR(){try{localStorage.setItem('kyoei3r',JSON.stringify(S.receivedEstimates));showSaved();}catch(e){}}
+function showSaved(){const el=document.getElementById('savedBadge');if(!el)return;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200);}
+function today(){return new Date().toISOString().split('T')[0]}
+function nowJST(){const s=new Date().toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});return s.replace(/\//g,'/').replace(',','');}
+function fmt(n){return n?Number(n).toLocaleString('ja-JP'):''}
+function calcSub(items){return items.reduce((s,it)=>s+(parseFloat(it.amount)||0),0)}
+function calcKaisouTotal(e){return(parseFloat(e.kaisouFare1)||0)+(parseFloat(e.kaisouFare2)||0);}
+function typeLabel(t){return{shio:'塩（外販）',nai:'内販',kaisou:'回漕'}[t]||t}
+function typeBadge(t){const cls={shio:'b-shio',nai:'b-nai',kaisou:'b-kaisou'}[t]||'';const icon={shio:'ti-box',nai:'ti-building-warehouse',kaisou:'ti-ship'}[t]||'ti-file';return`<span class="badge ${cls}"><i class="ti ${icon}" style="font-size:10px"></i>${typeLabel(t)}</span>`}
+function genNo(t){
+  const hundred={kaisou:5,nai:7,shio:9}[t]||0;
+  const now=new Date();
+  const yy=String(now.getFullYear()).slice(-2),m=String(now.getMonth()+1).padStart(2,'0'),dd=String(now.getDate()).padStart(2,'0');
+  const ymd=yy+m+dd;
+  const ym=yy+m;
+  const c=S.estimates.filter(e=>e.type===t&&typeof e.no==='string'&&e.no.slice(0,4)===ym&&e.no.slice(7,8)===String(hundred)).length+1;
+  const seq=String(hundred*100+c).padStart(3,'0');
+  return `${ymd}-${seq}`;
+}
+
+function sw(tab){
+  S.tab=tab;
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('active',['list','new','receipt','delivery','received','help','admin','settings'][i]===tab);
+  });
+  render();
+}
+
+function newEst(type){
+  S.editData={type,no:genNo(type),date:today(),customer:'',ref:'',delivery:'',lot:'',receive:'',deliveryDate:'',receivePlace:'',payment:'従来通り',valid:'次回価格改定まで',note:'',items:[{name:'',spec:'',qty:'',unit:'袋',price:'',amount:''}],remarks:'※上記お見積りに消費税は含まれておりません。',approved:'',checked:'',created:'',kaisouShip:'',kaisouRoute:'',kaisouFare1:'',kaisouFareLabel1:'（船腹）',kaisouFare2:'',kaisouFareLabel2:'（船腹）',kaisouConditions:''};
+  S.selIdx=null;
+  sw('new');
+}
+function viewEst(i){S.editData=JSON.parse(JSON.stringify(S.estimates[i]));S.selIdx=i;S.readOnly=true;sw('new');}
+function editEst(i){S.editData=JSON.parse(JSON.stringify(S.estimates[i]));S.selIdx=i;S.readOnly=false;sw('new');}
+function delEst(i){if(!confirm('削除しますか？'))return;S.estimates.splice(i,1);sv();render();}
+function copyEst(i){const src=S.estimates[i];const copy=JSON.parse(JSON.stringify(src));copy.no=genNo(src.type);copy.date=today();S.editData=copy;S.selIdx=null;S.readOnly=false;sw('new');}
+function addItem(){if(!S.editData)return;S.editData.items.push({name:'',spec:'',qty:'',unit:'袋',price:'',amount:''});render();}
+function removeItem(i){S.editData.items.splice(i,1);render();}
+function updItem(i,f,v){
+  S.editData.items[i][f]=v;
+  if(f==='qty'||f==='price'){
+    const q=parseFloat(S.editData.items[i].qty)||0,p=parseFloat(S.editData.items[i].price)||0;
+    S.editData.items[i].amount=q&&p?Math.round(q*p):'';
+    const cell=document.getElementById('amt-'+i);
+    if(cell)cell.textContent=S.editData.items[i].amount?fmt(S.editData.items[i].amount):'';
+  }
+  updTotals();
+}
+function updField(f,v){if(S.editData)S.editData[f]=v;}
+function updTotals(){
+  const d=S.editData;if(!d)return;
+  const sub=calcSub(d.items),tax=Math.round(sub*.1);
+  const e1=document.getElementById('tSub'),e2=document.getElementById('tTax'),e3=document.getElementById('tGrand');
+  if(e1)e1.textContent=fmt(sub)+'円';
+  if(e2)e2.textContent=fmt(tax)+'円';
+  if(e3)e3.textContent=fmt(sub+tax)+'円';
+}
+function saveEst(){
+  if(!S.editData)return;
+  if(S.selIdx!==null){S.estimates[S.selIdx]=JSON.parse(JSON.stringify(S.editData));S.selIdx=null;}
+  else{S.estimates.unshift(JSON.parse(JSON.stringify(S.editData)));}
+  S.editData=null;S.readOnly=false;sv();sw('list');
+}
+
+function applyA4Scale(pa){
+  const inner=pa.querySelector('.print-doc-inner');
+  if(!inner)return;
+  // まずスケールをリセットして自然サイズを計測
+  inner.style.transform='none';
+  inner.style.width='';
+  inner.style.height='';
+  // A4サイズ（px換算: 96dpi基準）
+  const a4w=794; // 210mm ≈ 794px
+  const a4h=1123; // 297mm ≈ 1123px
+  inner.style.width=a4w+'px';
+  inner.style.boxSizing='border-box';
+  // レイアウト確定を待って高さを計測
+  const contentH=inner.scrollHeight;
+  const contentW=inner.scrollWidth;
+  const scaleH=a4h/contentH;
+  const scaleW=a4w/contentW;
+  const scale=Math.min(scaleH,scaleW); // 縦横両方収まる最大スケール
+  inner.style.transform=`scale(${scale})`;
+  inner.style.transformOrigin='top left';
+  // スケール後の実サイズに合わせてコンテナを調整
+  inner.style.width=(a4w/scale)+'px';
+  pa.style.width=a4w+'px';
+  pa.style.height=a4h+'px';
+  pa.style.overflow='hidden';
+  pa.style.position='fixed';
+  pa.style.top='0';
+  pa.style.left='0';
+}
+
+function resetPrintArea(pa){
+  const inner=pa.querySelector('.print-doc-inner');
+  if(inner){inner.style.transform='';inner.style.width='';inner.style.height='';}
+  pa.style.display='none';
+  pa.style.width='';pa.style.height='';
+  pa.style.overflow='';pa.style.position='';
+  pa.style.top='';pa.style.left='';
+  document.querySelector('.app').style.display='';
+}
+
+function printEst(idx){
+  const e=typeof idx==='number'?S.estimates[idx]:S.editData;
+  if(!e){alert('先に見積を保存してください');return;}
+  const html=buildPrintDoc(e,'見積書','');
+  const pa=document.getElementById('printArea');
+  pa.innerHTML=html;
+  pa.style.display='block';
+  document.querySelector('.app').style.display='none';
+  // レイアウト確定後にスケール計算
+  setTimeout(()=>{
+    applyA4Scale(pa);
+    setTimeout(()=>{
+      window.print();
+      resetPrintArea(pa);
+    },100);
+  },80);
+}
+function printDoc(docType){
+  const e=S.selIdx!==null?S.estimates[S.selIdx]:(S.estimates.length?S.estimates[0]:null);
+  if(!e){alert('見積を選択してください');return;}
+  const name={receipt:'受領書',delivery:'納品書'}[docType];
+  const html=buildPrintDoc(e,name,e.deliveryAddr||'');
+  const pa=document.getElementById('printArea');
+  pa.innerHTML=html;
+  pa.style.display='block';
+  document.querySelector('.app').style.display='none';
+  setTimeout(()=>{
+    applyA4Scale(pa);
+    setTimeout(()=>{
+      window.print();
+      resetPrintArea(pa);
+    },100);
+  },80);
+}
+
+// ── Code 128B バーコード生成 ──────────────────────────────
+function genCode128SVG(text, opts){
+  opts = opts || {};
+  const barH    = opts.height   || 40;   // バー高さ(px)
+  const xScale  = opts.xScale   || 1.6;  // 1モジュール幅(px) ※最小2推奨
+  const showTxt = opts.showTxt  !== false;
+  const fontSize= opts.fontSize || 9;
+
+  // Code 128B シンボルテーブル (index 0〜102, 各11モジュール)
+  // ※ STOP(index 106)は7要素 2331112 のため別定義
+  const TABLE = [
+    212222,222122,222221,121223,121322,131222,122213,122312,132212,221213,
+    221312,231212,112232,122132,122231,113222,123122,123221,223211,221132,
+    221231,213212,223112,312131,311222,321122,321221,312212,322112,322211,
+    212123,212321,232121,111323,131123,131321,112313,132113,132311,211313,
+    231113,231311,112133,112331,132131,113123,113321,133121,313121,211331,
+    231131,213113,213311,213131,311123,311321,331121,312113,312311,332111,
+    314111,221411,431111,111224,111422,121124,121421,141122,141221,112214,
+    112412,122114,122411,142112,142211,241211,221114,413111,241112,134111,
+    111242,121142,121241,114212,124112,124211,411212,421112,421211,212141,
+    214121,412121,111143,111341,131141,114113,114311,411113,411311,113141,
+    114131,311141,411131,211412,211214,211232
+  ];
+  const STOP_PAT = [2,3,3,1,1,1,2]; // STOPは7要素・13モジュール
+  const START_B  = 104;              // START B のシンボル番号
+
+  function pat6(v){ return String(v).padStart(6,'0').split('').map(Number); }
+
+  // チェックサム: START_B + Σ(文字インデックス × 位置) mod 103
+  const chars = text.split('').map(c => c.charCodeAt(0) - 32);
+  let cs = START_B;
+  chars.forEach((ci, i) => { cs += ci * (i + 1); });
+  cs = cs % 103;
+
+  // バー列を構築
+  // 通常シンボル: 奇数インデックス=バー、偶数=スペース
+  const bars = [];
+  let x = 0;
+  function drawPat(pat){
+    pat.forEach((w, j) => {
+      const px = w * xScale;
+      if(j % 2 === 0) bars.push({ x, w: px }); // バー
+      x += px;
+    });
+  }
+
+  // START B
+  drawPat(pat6(TABLE[START_B]));
+  // データ文字
+  chars.forEach(ci => drawPat(pat6(TABLE[ci])));
+  // チェックサム
+  drawPat(pat6(TABLE[cs]));
+  // STOP (7要素)
+  drawPat(STOP_PAT);
+
+  // quiet zone: 左右に10モジュール分の余白を追加
+  const qz    = 10 * xScale;
+  const totalW = Math.ceil(x + qz * 2);
+  const totalH = barH + (showTxt ? fontSize + 4 : 0);
+
+  const rects = bars.map(b =>
+    `<rect x="${(b.x + qz).toFixed(2)}" y="0" width="${b.w.toFixed(2)}" height="${barH}" fill="#000"/>`
+  ).join('');
+  const label = showTxt
+    ? `<text x="${(totalW/2).toFixed(1)}" y="${barH + fontSize + 1}" text-anchor="middle" font-family="monospace" font-size="${fontSize}" fill="#333">${text}</text>`
+    : '';
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${totalW}" height="${totalH}" viewBox="0 0 ${totalW} ${totalH}" style="background:#fff">${rects}${label}</svg>`;
+}
+// ────────────────────────────────────────────────────────────
+
+function buildPrintDoc(e,docName,deliveryAddr){
+  deliveryAddr=deliveryAddr||'';
+  const sub=calcSub(e.items),tax=Math.round(sub*.1),grand=sub+tax;
+  const isEst=docName==='見積書';
+  const isKaisou=e.type==='kaisou';
+  const title=isEst?'御　見　積　書':
+    docName==='受領書'?'受　領　書':docName==='請求書'?'請　求　書':'納　品　書';
+
+  // 右側：見積人ブロック（会社情報 + 承認・調査・作成）
+  const partyRight=`
+    <div class="party-right">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="party-label">見積人</div>
+          <div style="font-size:10px;color:#555">日付：<span style="color:#222;font-weight:500">${e.date}</span></div>
+        </div>
+        <div class="company-name">${CO.name}</div>
+        <div class="company-sub">${CO.addr}<br>${CO.tel}</div>
+      </div>
+      <div class="stamp-row">
+        <div class="stamp-cell">承　認<div class="stamp-box">${e.approved||''}</div></div>
+        <div class="stamp-cell">調　査<div class="stamp-box">${e.checked||''}</div></div>
+        <div class="stamp-cell">作　成<div class="stamp-box">${e.created||''}</div></div>
+      </div>
+    </div>`;
+
+  // 左側：宛先ブロック
+  const greeting=isKaisou&&isEst
+    ?`<p style="font-size:10px;color:#444;line-height:1.9;margin-bottom:4px">　拝啓　貴社ますますご清祥のこととお喜び申し上げます。</p>
+       <p style="font-size:10px;color:#444;line-height:1.9;margin-bottom:4px">　さて、ご照会頂きました海上輸送に関し下記の通り御見積申し上げます。</p>
+       <p style="font-size:10px;color:#444;text-align:right">何卒御用命下さいます様ご検討の程お願い申し上げます。　敬　具</p>`
+    :isEst
+    ?`<p style="font-size:10px;color:#444;line-height:1.9">ご照会の件下記の通り御見積申し上げます。<br>何卒御用命下さいます様お願い申し上げます。</p>`
+    :'';
+  const refText=e.ref||`${e.date}付のご照会の件`;
+  const deliveryAddrHtml=!isEst&&deliveryAddr
+    ?`<div style="font-size:10px;color:#333;margin-top:6px;margin-bottom:2px;line-height:1.8"><span style="color:#5a6a82;font-weight:500;font-size:9px;letter-spacing:.04em;display:block;margin-bottom:2px">お届け先</span>${deliveryAddr.replace(/\n/g,'<br>')}</div>`
+    :'';
+  const partyLeft=`
+    <div class="party-left">
+      <div class="party-label">宛　先</div>
+      <div class="customer-name">${e.customer||'　'}　御中</div>
+      ${deliveryAddrHtml}
+      ${isEst?`<div style="font-size:10px;color:#666;margin-bottom:8px">${refText}</div>`:''}
+      ${greeting}
+    </div>`;
+
+  // 条件欄
+  const nl2br=s=>(s||'').replace(/\n/g,'<br>');
+  const condRows=isKaisou?[]:e.type==='nai'?([
+    {k:'納期',v:nl2br(e.deliveryDate)},{k:'受渡場所',v:nl2br(e.receivePlace)},
+    {k:'発注ロット',v:nl2br(e.lot)},{k:'受渡条件',v:nl2br(e.receive)},
+    {k:'御支払条件',v:nl2br(e.payment)},{k:'見積有効期間',v:nl2br(e.valid)},
+    {k:'その他',v:nl2br(e.note)}
+  ].filter(c=>c.v)):([
+    {k:'受渡期限',v:nl2br(e.delivery)},{k:'納期',v:nl2br(e.deliveryDate)},{k:'発注ロット',v:nl2br(e.lot)},
+    {k:'受渡条件',v:nl2br(e.receive)},{k:'御支払条件',v:nl2br(e.payment)},
+    {k:'見積有効期間',v:nl2br(e.valid)},{k:'その他',v:nl2br(e.note)}
+  ].filter(c=>c.v));
+
+  // 品目テーブル
+  let itemsBlock='';
+  if(docName==='納品書'){
+    itemsBlock=`<table class="items-table"><thead><tr>
+      <th style="width:44%">品名</th><th style="width:14%">規格</th><th class="right" style="width:10%">数量</th><th style="width:8%">単位</th><th>備考</th>
+    </tr></thead><tbody>
+      ${e.items.filter(it=>it.name).map((it,idx)=>`<tr><td>${it.name}</td><td>${it.spec||''}</td><td class="right">${it.qty||''}</td><td>${it.unit||''}</td><td></td></tr>`).join('')}
+    </tbody></table>`;
+  }else if(docName!=='見積書'||!isKaisou){
+    itemsBlock=`<table class="items-table"><thead><tr>
+      <th style="width:36%">品名</th><th style="width:13%">規格</th><th class="right" style="width:9%">数量</th><th style="width:7%">単位</th><th class="right" style="width:13%">単価（円）</th><th class="right" style="width:16%">金額（円）</th>
+    </tr></thead><tbody>
+      ${e.items.filter(it=>it.name).map(it=>`<tr><td>${it.name}</td><td>${it.spec||''}</td><td class="right">${it.qty||''}</td><td>${it.unit||''}</td><td class="right">${fmt(it.price)}</td><td class="right">${fmt(it.amount)}</td></tr>`).join('')}
+    </tbody></table>`;
+  }
+
+  const totalBlock=docName==='納品書'?'':`
+    <div class="total-section">
+      <div class="total-inner">
+        <div class="total-grid">
+          <div class="tk">小計</div><div class="tv">¥ ${fmt(sub)}</div>
+          <div class="tk">消費税（10%）</div><div class="tv">¥ ${fmt(tax)}</div>
+          <div class="grand-k">合　計</div><div class="grand-v">¥ ${fmt(grand)}</div>
+        </div>
+      </div>
+    </div>`;
+
+  let kaisouSection='';
+  if(isKaisou&&isEst){
+    const rows=[
+      {k:'１．品名',v:e.items.map(it=>it.name).filter(Boolean).join('、')},
+      {k:'２．使用船舶',v:e.kaisouShip||''},
+      {k:'３．海上運賃',v:[e.kaisouFare1?'①2日航程　'+fmt(e.kaisouFare1)+'円　'+(e.kaisouFareLabel1||''):'',e.kaisouFare2?'②3日航程　'+fmt(e.kaisouFare2)+'円　'+(e.kaisouFareLabel2||''):''].filter(Boolean).join('<br>')},
+      {k:'４．航路',v:e.kaisouRoute||''},
+      {k:'５．適用開始時期',v:nl2br(e.delivery)},
+      {k:'６．付帯条件',v:nl2br(e.kaisouConditions)},
+      {k:'７．支払条件',v:nl2br(e.payment)},
+      {k:'８．その他',v:nl2br(e.note)},
+    ].filter(r=>r.v);
+    kaisouSection=`<div class="kaisou-section">
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        ${rows.map(r=>`<tr>
+          <td class="kaisou-key">${r.k}</td>
+          <td class="kaisou-val">${r.v}</td>
+        </tr>`).join('')}
+      </table>
+    </div>`;
+  }
+
+  // バーコード（納品書・受領書のみ）
+  const barcodeBlock = (docName==='納品書'||docName==='受領書') && e.no
+    ? `<div style="margin-top:14px;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+        <div style="font-size:8px;color:#8a9ab5;letter-spacing:.06em;text-align:right">見積No.</div>
+        ${genCode128SVG(e.no,{height:48,xScale:2.0,fontSize:9})}
+      </div>`
+    : '';
+
+  return`<div class="print-doc-inner">
+    <div class="doc-title-center" style="display:flex;align-items:center;justify-content:center;position:relative">
+      <span>${title}</span>
+      <span style="position:absolute;right:0;font-size:11px;font-weight:400;letter-spacing:normal;color:#555">No.&nbsp;<span style="color:#222;font-weight:500">${e.no}</span></span>
+    </div>
+    <div class="doc-party">${partyLeft}${partyRight}</div>
+    ${condRows.length?`<div class="conditions-band">${condRows.map(c=>`<div class="cond-row"><span class="cond-key">${c.k}</span><span class="cond-val">${c.v}</span></div>`).join('')}</div>`:''}
+    ${!isKaisou||docName!=='見積書'?`<div class="items-section"><div class="items-title">品　目　明　細</div>${itemsBlock}</div>${totalBlock}`:''}
+    ${kaisouSection}
+    ${e.remarks?`<div class="remarks-section">${e.remarks.replace(/\n/g,'<br>')}</div>`:''}
+    ${barcodeBlock}
+  </div>`;
+}
+
+function render(){
+  const c=document.getElementById('main');if(!c)return;
+  if(S.tab==='list')c.innerHTML=renderList();
+  else if(S.tab==='new')c.innerHTML=renderNew();
+  else if(S.tab==='received')c.innerHTML=renderReceived();
+  else if(S.tab==='help')c.innerHTML=renderHelp();
+  else if(S.tab==='admin')c.innerHTML=renderAdmin();
+  else if(S.tab==='settings')c.innerHTML=renderSettings();
+  else c.innerHTML=renderDocTab(S.tab);
+  // 備考欄の高さをコンテンツに合わせて自動調整（入力・閲覧両モード）
+  var ta=document.getElementById('remarksTA');
+  if(ta){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
+}
+
+function renderList(){
+  if(!S.estimates.length)return`<div class="empty"><i class="ti ti-file-off"></i>見積書がまだありません<br><br>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px">
+      <button class="btn primary" onclick="newEst('shio')"><i class="ti ti-plus"></i>塩</button>
+      <button class="btn primary" onclick="newEst('nai')"><i class="ti ti-plus"></i>内販</button>
+      <button class="btn primary" onclick="newEst('kaisou')"><i class="ti ti-plus"></i>回漕</button>
+    </div></div>`;
+  const q=(S.searchQ||'').trim().toLowerCase();
+  const filtered=S.estimates.map((e,i)=>({e,i})).filter(({e})=>{
+    if(!q)return true;
+    const amtNum=e.type==='kaisou'?calcKaisouTotal(e):calcSub(e.items);
+    return (e.no||'').toLowerCase().includes(q)
+      ||(e.customer||'').toLowerCase().includes(q)
+      ||(e.date||'').includes(q)
+      ||fmt(amtNum).includes(q)
+      ||String(amtNum).includes(q)
+      ||(e.created||'').toLowerCase().includes(q)
+      ||typeLabel(e.type).toLowerCase().includes(q);
+  });
+  const cards=filtered.map(({e,i})=>{
+    const amtNum=e.type==='kaisou'?calcKaisouTotal(e):calcSub(e.items);
+    const amtLabel=e.type==='kaisou'&&amtNum?`<div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px">
+        <span style="font-size:15px;font-weight:500;color:#1a3a6b">${fmt(amtNum)}円</span>
+        <span style="font-size:10px;color:#8a9ab5">海上運賃合計</span>
+      </div>`:amtNum?`<span style="font-size:15px;font-weight:500;color:#1a3a6b">${fmt(amtNum)}円</span>`:`<span style="font-size:15px;font-weight:500;color:#aaa">-</span>`;
+    const dateStr=e.date?e.date.replace(/-/g,'/'):'';
+    return`<div class="est-card" onclick="viewEst(${i})" style="cursor:pointer">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="font-size:11px;color:#8a9ab5;font-weight:500;font-family:monospace">No. ${e.no}</div>
+        <div style="font-size:14px;font-weight:600;color:#1a2a44">${e.customer||'（宛先未入力）'}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap">
+          ${typeBadge(e.type)}
+          <span style="font-size:11px;color:#5a6a82;background:#f0f4fa;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-calendar" style="font-size:10px"></i>${dateStr}</span>
+          ${e.created?`<span style="font-size:11px;background:#e8eef7;color:#1a3a6b;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-user" style="font-size:10px"></i>${e.created}</span>`:''}
+        </div>
+      </div>
+      <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        ${amtLabel}
+        <div style="display:flex;gap:6px">
+          <button class="btn sm" onclick="event.stopPropagation();editEst(${i})"><i class="ti ti-edit"></i>修正</button>
+          <button class="btn sm" onclick="event.stopPropagation();copyEst(${i})" title="この見積書をコピーして新規作成"><i class="ti ti-copy"></i>コピー</button>
+          <button class="btn sm pdf" onclick="event.stopPropagation();printEst(${i})"><i class="ti ti-printer"></i>PDF印刷</button>
+          <button class="btn sm danger" onclick="event.stopPropagation();delEst(${i})"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  const noResult=filtered.length===0&&q?`<div class="empty" style="padding:32px 20px"><i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px;opacity:.3"></i>「${q}」に一致する見積書はありません</div>`:'';
+  return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <span style="font-size:13px;color:#666">${filtered.length}件${q?'／'+S.estimates.length+'件中':''}</span>
+    <div style="display:flex;gap:8px">
+      <button class="btn sm primary" onclick="newEst('shio')"><i class="ti ti-plus"></i>塩</button>
+      <button class="btn sm primary" onclick="newEst('nai')"><i class="ti ti-plus"></i>内販</button>
+      <button class="btn sm primary" onclick="newEst('kaisou')"><i class="ti ti-plus"></i>回漕</button>
+    </div>
+  </div>
+  <div style="position:relative;margin-bottom:12px">
+    <i class="ti ti-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#8a9ab5;font-size:15px;pointer-events:none"></i>
+    <input type="text" id="searchBox" value="${S.searchQ||''}" oninput="S.searchQ=this.value;renderListInPlace()" placeholder="会社名・日付・金額・見積番号・作成者・種別（塩/内販/回漕）で検索…" style="padding:8px 10px 8px 34px;border:1px solid #c8d4e0;border-radius:8px;width:100%;font-size:13px;font-family:inherit;color:#222;background:#fff" onfocus="this.style.borderColor='#1a3a6b'" onblur="this.style.borderColor='#c8d4e0'">
+    ${q?`<button onclick="S.searchQ='';render()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:#8a9ab5;font-size:18px;line-height:1">×</button>`:''}
+  </div>
+  <div class="list-panel" id="listPanel">${cards}${noResult}</div>`;
+}
+
+function renderListInPlace(){
+  const q=(S.searchQ||'').trim().toLowerCase();
+  const filtered=S.estimates.map((e,i)=>({e,i})).filter(({e})=>{
+    if(!q)return true;
+    const amtNum=e.type==='kaisou'?calcKaisouTotal(e):calcSub(e.items);
+    return (e.no||'').toLowerCase().includes(q)
+      ||(e.customer||'').toLowerCase().includes(q)
+      ||(e.date||'').includes(q)
+      ||fmt(amtNum).includes(q)
+      ||String(amtNum).includes(q)
+      ||(e.created||'').toLowerCase().includes(q)
+      ||typeLabel(e.type).toLowerCase().includes(q);
+  });
+  const cards=filtered.map(({e,i})=>{
+    const amtNum=e.type==='kaisou'?calcKaisouTotal(e):calcSub(e.items);
+    const amtLabel=e.type==='kaisou'&&amtNum?`<div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px">
+        <span style="font-size:15px;font-weight:500;color:#1a3a6b">${fmt(amtNum)}円</span>
+        <span style="font-size:10px;color:#8a9ab5">海上運賃合計</span>
+      </div>`:amtNum?`<span style="font-size:15px;font-weight:500;color:#1a3a6b">${fmt(amtNum)}円</span>`:`<span style="font-size:15px;font-weight:500;color:#aaa">-</span>`;
+    const dateStr=e.date?e.date.replace(/-/g,'/'):'';
+    return`<div class="est-card" onclick="viewEst(${i})" style="cursor:pointer">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="font-size:11px;color:#8a9ab5;font-weight:500;font-family:monospace">No. ${e.no}</div>
+        <div style="font-size:14px;font-weight:600;color:#1a2a44">${e.customer||'（宛先未入力）'}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap">
+          ${typeBadge(e.type)}
+          <span style="font-size:11px;color:#5a6a82;background:#f0f4fa;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-calendar" style="font-size:10px"></i>${dateStr}</span>
+          ${e.created?`<span style="font-size:11px;background:#e8eef7;color:#1a3a6b;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-user" style="font-size:10px"></i>${e.created}</span>`:''}
+        </div>
+      </div>
+      <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        ${amtLabel}
+        <div style="display:flex;gap:6px">
+          <button class="btn sm" onclick="event.stopPropagation();editEst(${i})"><i class="ti ti-edit"></i>修正</button>
+          <button class="btn sm" onclick="event.stopPropagation();copyEst(${i})" title="この見積書をコピーして新規作成"><i class="ti ti-copy"></i>コピー</button>
+          <button class="btn sm pdf" onclick="event.stopPropagation();printEst(${i})"><i class="ti ti-printer"></i>PDF印刷</button>
+          <button class="btn sm danger" onclick="event.stopPropagation();delEst(${i})"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  const noResult=filtered.length===0&&q?`<div class="empty" style="padding:32px 20px"><i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px;opacity:.3"></i>「${q}」に一致する見積書はありません</div>`:'';
+  const panel=document.getElementById('listPanel');
+  if(panel)panel.innerHTML=cards+noResult;
+  const cnt=document.querySelector('.list-count');
+  if(cnt)cnt.textContent=filtered.length+'件'+(q?'／'+S.estimates.length+'件中':'');
+}
+
+function renderNew(){
+  // 種別未選択なら大きなボタンを表示
+  if(!S.editData){
+    return`<div class="card" style="max-width:560px;margin:0 auto">
+      <div class="card-head"><i class="ti ti-file-plus"></i>見積書の種別を選択してください</div>
+      <div class="type-select-area">
+        <button class="type-btn-big shio" onclick="newEst('shio')">
+          <div class="icon"><i class="ti ti-box"></i></div>
+          <div class="label">塩（外販）</div>
+          <div class="desc">外販向け塩の見積書</div>
+        </button>
+        <button class="type-btn-big nai" onclick="newEst('nai')">
+          <div class="icon"><i class="ti ti-building-warehouse"></i></div>
+          <div class="label">内販</div>
+          <div class="desc">内販向け商品の見積書</div>
+        </button>
+        <button class="type-btn-big kaisou" onclick="newEst('kaisou')">
+          <div class="icon"><i class="ti ti-ship"></i></div>
+          <div class="label">回漕</div>
+          <div class="desc">海上輸送の見積書</div>
+        </button>
+      </div>
+    </div>`;
+  }
+  return renderForm();
+}
+
+function renderForm(){
+  const d=S.editData;if(!d)return'';
+  const sub=calcSub(d.items),tax=Math.round(sub*.1);
+  const items=d.items.map((it,i)=>`<tr>
+    <td><input type="text" value="${it.name}" oninput="updItem(${i},'name',this.value)" placeholder="品名"></td>
+    <td><input type="text" value="${it.spec}" oninput="updItem(${i},'spec',this.value)" placeholder="規格"></td>
+    <td><input type="number" value="${it.qty}" oninput="updItem(${i},'qty',this.value)" style="width:60px;text-align:right"></td>
+    <td><input type="text" value="${it.unit}" oninput="updItem(${i},'unit',this.value)" style="width:36px"></td>
+    <td><input type="number" value="${it.price}" oninput="updItem(${i},'price',this.value)" style="width:90px;text-align:right"></td>
+    <td id="amt-${i}" style="text-align:right;padding:4px 8px;font-weight:500;color:#1a3a6b">${it.amount?fmt(it.amount):''}</td>
+    <td style="text-align:center"><button class="btn sm danger" onclick="removeItem(${i})"><i class="ti ti-trash"></i></button></td>
+  </tr>`).join('');
+  const isReadOnly=S.readOnly===true;
+  const disabledOverlay=isReadOnly?'<div style="position:absolute;inset:0;z-index:10;cursor:not-allowed;border-radius:10px"></div>':'' ;
+  let extraCard='';
+  if(d.type==='kaisou'){
+    const kaisouItems=d.items.map((it,i)=>`<tr>
+      <td><input type="text" value="${it.name}" onchange="updItem(${i},'name',this.value)" placeholder="品名"></td>
+      <td style="text-align:center"><button class="btn sm danger" onclick="removeItem(${i})"><i class="ti ti-trash"></i></button></td>
+    </tr>`).join('');
+    extraCard=`<div class="card" style="position:relative">${disabledOverlay}<div class="card-head"><i class="ti ti-package"></i>品目</div>
+    <div class="card-body">
+    <div class="item-table-wrap"><table class="item-table">
+      <thead><tr><th>品名</th><th style="width:48px"></th></tr></thead>
+      <tbody>${kaisouItems}</tbody>
+    </table></div>
+    <button class="btn sm" style="margin-top:10px" onclick="addItem()"><i class="ti ti-plus"></i>行追加</button>
+    </div></div>
+    <div class="card" style="position:relative">${disabledOverlay}<div class="card-head"><i class="ti ti-ship"></i>海上輸送詳細</div>
+    <div class="card-body"><div class="form-grid">
+      <div class="form-group"><label>使用船舶</label><input type="text" value="${d.kaisouShip||''}" onchange="updField('kaisouShip',this.value)" placeholder="499型一般貨物船"></div>
+      <div class="form-group"><label>航路</label><input type="text" value="${d.kaisouRoute||''}" onchange="updField('kaisouRoute',this.value)" placeholder="水島 / 黒崎"></div>
+      <div class="form-group"><label>海上運賃①（2日航程）金額（円）</label>
+        <div style="display:flex;gap:6px">
+          <input type="number" value="${d.kaisouFare1||''}" onchange="updField('kaisouFare1',this.value)" placeholder="2220000" style="flex:1;text-align:right;border-radius:6px">
+          <input type="text" value="${d.kaisouFareLabel1||'（船腹）'}" onchange="updField('kaisouFareLabel1',this.value)" placeholder="（船腹）" style="width:110px;border-radius:6px">
+        </div>
+      </div>
+      <div class="form-group"><label>海上運賃②（3日航程）金額（円）</label>
+        <div style="display:flex;gap:6px">
+          <input type="number" value="${d.kaisouFare2||''}" onchange="updField('kaisouFare2',this.value)" placeholder="3000000" style="flex:1;text-align:right;border-radius:6px">
+          <input type="text" value="${d.kaisouFareLabel2||'（船腹）'}" onchange="updField('kaisouFareLabel2',this.value)" placeholder="（船腹）" style="width:110px;border-radius:6px">
+        </div>
+      </div>
+      <div class="form-group full"><label>付帯条件</label><textarea rows="4" onchange="updField('kaisouConditions',this.value)">${d.kaisouConditions||''}</textarea></div>
+    </div></div></div>`;
+  }
+  return`<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      ${typeBadge(d.type)}
+      <span style="font-size:15px;font-weight:500;color:#1a3a6b">御見積書</span>
+      ${isReadOnly?'<span style="font-size:11px;background:#e8eef7;color:#5a6a82;padding:2px 10px;border-radius:99px;font-weight:500"><i class="ti ti-eye" style="font-size:11px"></i> 閲覧モード</span>':''}
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end">
+      <div style="text-align:right">
+        <div style="font-size:10px;color:#5a6a82;font-weight:500;letter-spacing:.03em">見積番号</div>
+        <div style="font-size:15px;font-weight:500;color:#1a3a6b;font-family:monospace">${d.no}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="S.editData=null;S.readOnly=false;sw('list')"><i class="ti ti-arrow-left"></i>一覧へ戻る</button>
+        <button class="btn pdf" onclick="printEst()"><i class="ti ti-printer"></i>PDF印刷</button>
+        ${isReadOnly
+          ?`<button class="btn" onclick="copyEst(S.selIdx)"><i class="ti ti-copy"></i>コピー</button>
+            <button class="btn primary" onclick="S.readOnly=false;render()"><i class="ti ti-edit"></i>修正する</button>`
+          :`<button class="btn primary" onclick="saveEst()"><i class="ti ti-device-floppy"></i>保存</button>`
+        }
+      </div>
+    </div>
+  </div>
+  ${isReadOnly?'<div style="background:#f0f4fc;border:1.5px solid #b8c8e0;border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:#3a5a8a;display:flex;align-items:center;gap:8px"><i class="ti ti-lock" style="font-size:15px"></i>閲覧モードです。内容を修正するには右上の「修正する」ボタンを押してください。</div>':''}
+  <div class="card" style="position:relative">${disabledOverlay}<div class="card-head"><i class="ti ti-info-circle"></i>基本情報</div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="form-group"><label>作成日</label><input type="date" value="${d.date}" onchange="updField('date',this.value)"></div>
+        <div class="form-group"><label>宛先（会社名）</label><input type="text" value="${d.customer}" onchange="updField('customer',this.value)" placeholder="例：中四国ソルト株式会社"></div>
+        <div class="form-group full"><label>照会番号・件名</label><input type="text" value="${d.ref}" onchange="updField('ref',this.value)" placeholder="例：〇〇年〇月〇日付貴第〇〇号にて"></div>
+      </div>
+      <div style="border-top:2px dashed #dce8f5;margin-top:16px;padding-top:14px">
+        <div style="font-size:11px;font-weight:600;color:#3a6abf;letter-spacing:.05em;margin-bottom:10px;display:flex;align-items:center;gap:5px"><i class="ti ti-writing" style="font-size:13px"></i>担当者</div>
+        <div class="form-grid-3">
+          <div class="form-group"><label>承認</label><input type="text" value="${d.approved||''}" onchange="updField('approved',this.value)"></div>
+          <div class="form-group"><label>調査</label><input type="text" value="${d.checked||''}" onchange="updField('checked',this.value)"></div>
+          <div class="form-group"><label>作成</label><input type="text" value="${d.created||''}" onchange="updField('created',this.value)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="position:relative">${disabledOverlay}<div class="card-head"><i class="ti ti-clipboard-list"></i>条件</div>
+    <div class="card-body"><div class="form-grid">
+      ${d.type==='kaisou'?`
+        <div class="form-group"><label>適用開始時期</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('delivery',this.value)" placeholder="従来通り">${d.delivery||''}</textarea></div>
+        <div class="form-group"><label>受渡場所</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('receive',this.value)">${d.receive||''}</textarea></div>
+        <div class="form-group"><label>御支払条件</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('payment',this.value)">${d.payment||''}</textarea></div>
+        <div class="form-group"><label>見積有効期間</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('valid',this.value)">${d.valid||''}</textarea></div>
+        <div class="form-group full"><label>その他</label><textarea onchange="updField('note',this.value)">${d.note||''}</textarea></div>
+      `:d.type==='nai'?`
+        <div class="form-group"><label>納期</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('deliveryDate',this.value)" placeholder="従来通り">${d.deliveryDate||''}</textarea></div>
+        <div class="form-group"><label>受渡場所</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('receivePlace',this.value)">${d.receivePlace||''}</textarea></div>
+        <div class="form-group"><label>発注ロット</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('lot',this.value)" placeholder="１ﾄﾝ（40袋）単位">${d.lot||''}</textarea></div>
+        <div class="form-group"><label>受渡条件</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('receive',this.value)">${d.receive||''}</textarea></div>
+        <div class="form-group"><label>御支払条件</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('payment',this.value)">${d.payment||''}</textarea></div>
+        <div class="form-group"><label>見積有効期間</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('valid',this.value)">${d.valid||''}</textarea></div>
+        <div class="form-group full"><label>その他</label><textarea onchange="updField('note',this.value)">${d.note||''}</textarea></div>
+      `:`
+        <div class="form-group"><label>受渡期限</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('delivery',this.value)" placeholder="従来通り">${d.delivery||''}</textarea></div>
+        <div class="form-group"><label>納期</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('deliveryDate',this.value)" placeholder="従来通り">${d.deliveryDate||''}</textarea></div>
+        <div class="form-group"><label>発注ロット</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('lot',this.value)" placeholder="１ﾄﾝ（40袋）単位">${d.lot||''}</textarea></div>
+        <div class="form-group"><label>受渡条件</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('receive',this.value)">${d.receive||''}</textarea></div>
+        <div class="form-group"><label>御支払条件</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('payment',this.value)">${d.payment||''}</textarea></div>
+        <div class="form-group"><label>見積有効期間</label><textarea rows="2" style="min-height:unset;height:54px;resize:vertical" onchange="updField('valid',this.value)">${d.valid||''}</textarea></div>
+        <div class="form-group full"><label>その他</label><textarea onchange="updField('note',this.value)">${d.note||''}</textarea></div>
+      `}
+    </div></div>
+  </div>
+  ${extraCard}
+  ${d.type!=='kaisou'?`<div class="card" style="position:relative">${disabledOverlay}<div class="card-head"><i class="ti ti-table"></i>品目明細</div>
+    <div class="card-body">
+    <div class="item-table-wrap"><table class="item-table">
+      <thead><tr><th>品名</th><th>規格</th><th>数量</th><th>単位</th><th>単価（円）</th><th>金額（円）</th><th></th></tr></thead>
+      <tbody>${items}</tbody>
+    </table></div>
+    <button class="btn sm" style="margin-top:10px" onclick="addItem()"><i class="ti ti-plus"></i>行追加</button>
+    <div class="total-wrap"><div class="total-box">
+      <div class="total-row"><span>小計</span><span id="tSub">${fmt(sub)}円</span></div>
+      <div class="total-row"><span>消費税（10%）</span><span id="tTax">${fmt(tax)}円</span></div>
+      <div class="total-row grand"><span>合計</span><span id="tGrand">${fmt(sub+tax)}円</span></div>
+    </div></div>
+    </div>
+  </div>`:''}
+  <div class="card" style="position:relative">${disabledOverlay}<div class="card-head"><i class="ti ti-note"></i>備考</div>
+    <div class="card-body"><div class="form-group"><label>備考</label><textarea id="remarksTA" oninput="updField('remarks',this.value);autoGrow(this)" onchange="updField('remarks',this.value)" style="overflow:hidden;resize:none;min-height:60px">${d.remarks||''}</textarea></div></div>
+  </div>`;
+}
+
+function updDeliveryAddr(val){
+  const idx=S.selIdx!==null?S.selIdx:0;
+  if(!S.estimates[idx])return;
+  S.estimates[idx].deliveryAddr=val;
+  sv();
+  const docName=S.tab==='receipt'?'受領書':'納品書';
+  const prev=document.getElementById('docPreview');
+  if(prev)prev.innerHTML=buildPrintDoc(S.estimates[idx],docName,val);
+}
+
+function renderDocTab(docType){
+  const names={receipt:'受領書',delivery:'納品書'};
+  const name=names[docType];
+  if(!S.estimates.length)return`<div class="empty"><i class="ti ti-file-off"></i>見積書を先に作成してください</div>`;
+  const idx=S.selIdx!==null?S.selIdx:0;
+  const e=S.estimates[idx];
+  const addr=e.deliveryAddr||'';
+  const list=S.estimates.map((est,i)=>`<div class="est-card${i===idx?' sel':''}" onclick="S.selIdx=${i};render()" style="display:block;margin-bottom:6px;padding:10px 12px">
+    <div style="font-size:11px;color:#1a3a6b;font-weight:500">No. ${est.no}</div>
+    <div style="font-size:13px;font-weight:500;margin:2px 0">${est.customer||'（未入力）'}</div>
+    ${typeBadge(est.type)}
+  </div>`).join('');
+  const previewHTML=buildPrintDoc(e,name,addr);
+  return`<div class="doc-split" style="display:grid;grid-template-columns:190px 1fr;gap:14px;align-items:start">
+    <div>
+      <div style="font-size:11px;font-weight:500;color:#5a6a82;margin-bottom:8px">見積を選択</div>
+      <div class="doc-split-list" style="max-height:520px;overflow-y:auto">${list}</div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:14px;font-weight:500;color:#1a3a6b">${name}　プレビュー</span>
+        <button class="btn pdf" onclick="printDoc('${docType}')"><i class="ti ti-printer"></i>PDF印刷</button>
+      </div>
+      <div class="card" style="padding:12px 16px;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:500;color:#5a6a82;margin-bottom:6px;display:flex;align-items:center;gap:5px"><i class="ti ti-map-pin" style="font-size:13px"></i>お届け先住所（任意）</div>
+        <textarea id="deliveryAddrInput" rows="2" placeholder="例：福岡県北九州市小倉北区○○町1-2-3" style="width:100%;padding:7px 10px;font-size:13px;border:1px solid #c8d4e0;border-radius:6px;font-family:inherit;resize:vertical;min-height:54px;color:#222" oninput="updDeliveryAddr(this.value)">${addr}</textarea>
+      </div>
+      <div class="pdf-preview" id="docPreview">${previewHTML}</div>
+    </div>
+  </div>`;
+}
+
+
+function renderReceivedInPlace(){
+  const q=(S.searchRQ||'').trim().toLowerCase();
+  const list=S.receivedEstimates;
+  const filtered=list.map((r,i)=>({r,i})).filter(({r})=>{
+    if(!q)return true;
+    return (r.supplier||'').toLowerCase().includes(q)
+      ||(r.date||'').includes(q)
+      ||(r.amount||'').replace(/,/g,'').includes(q.replace(/,/g,''))
+      ||(r.memo||'').toLowerCase().includes(q)
+      ||(r.registrant||'').toLowerCase().includes(q)
+      ||(r.type||'').toLowerCase().includes(q);
+  });
+  const cards=filtered.map(({r,i})=>{
+    const dateStr=r.date?r.date.replace(/-/g,'/'):''
+    return`
+    <div class="est-card" style="cursor:default;align-items:flex-start;gap:12px">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+          <span style="font-size:14px;font-weight:600;color:#1a2a44">${r.supplier||'（取引先未入力）'}</span>
+          ${r.type?`<span class="badge ${r.type==='shio'?'b-shio':r.type==='nai'?'b-nai':r.type==='kaisou'?'b-kaisou':''}"><i class="ti ${r.type==='shio'?'ti-box':r.type==='nai'?'ti-building-warehouse':'ti-ship'}" style="font-size:10px"></i>${{shio:'塩（外販）',nai:'内販',kaisou:'回漕'}[r.type]||r.type}</span>`:''}
+          ${r.registrant?`<span style="font-size:11px;background:#e8eef7;color:#1a3a6b;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-user" style="font-size:10px"></i>${r.registrant}</span>`:''}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px">
+          ${dateStr?`<span style="font-size:11px;color:#1a3a6b;background:#dce8f8;border:1px solid #b5cce8;padding:2px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:3px;font-weight:600"><i class="ti ti-calendar-event" style="font-size:11px"></i>見積日：${dateStr}</span>`:''}
+          ${r.savedAt?`<span style="font-size:11px;color:#1b6b3a;background:#d8f0e3;border:1px solid #8dd4ab;padding:2px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-calendar-plus" style="font-size:11px"></i>登録：${r.savedAt}</span>`:''}
+          ${r.updatedAt?`<span style="font-size:11px;color:#7a4f00;background:#fef3d0;border:1px solid #f0c84a;padding:2px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-calendar-check" style="font-size:11px"></i>最終修正：${r.updatedAt}</span>`:''}
+        </div>
+        ${r.amount?`<div style="font-size:15px;font-weight:600;color:#1a3a6b;margin-bottom:4px">¥ ${Number(r.amount.replace(/,/g,'')||0).toLocaleString('ja-JP')}</div>`:''}
+        ${r.memo?`<div style="font-size:12px;color:#666;line-height:1.6;white-space:pre-wrap;background:#f8fafd;border-left:3px solid #c8d4e8;padding:4px 10px;border-radius:0 4px 4px 0;margin-top:2px">${r.memo}</div>`:''}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0">
+        <button class="btn sm" onclick="editReceived(${i})"><i class="ti ti-edit"></i>修正</button>
+        <button class="btn sm pdf" onclick="viewReceivedPDF(${i})"><i class="ti ti-eye"></i>表示</button>
+        <button class="btn sm" onclick="downloadReceivedPDF(${i})"><i class="ti ti-download"></i>ダウンロード</button>
+        <button class="btn sm danger" onclick="delReceived(${i})"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>`}).join('');
+  const noResult=filtered.length===0&&q
+    ?`<div class="empty" style="padding:32px 20px"><i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px;opacity:.3"></i>「${q}」に一致する見積書はありません</div>`
+    :filtered.length===0
+    ?`<div class="empty"><i class="ti ti-inbox"></i>受領した見積書がまだありません<br><small style="font-size:12px;color:#aaa;margin-top:6px;display:block">下の「＋ PDFを追加」ボタンからアップロードしてください</small></div>`
+    :'';
+  const panel=document.getElementById('receivedPanel');
+  if(panel)panel.innerHTML=cards+noResult;
+  const cnt=document.querySelector('.received-count');
+  if(cnt)cnt.textContent=filtered.length+'件'+(q?'／'+list.length+'件中':'');
+}
+
+function renderReceived(){
+  const q=(S.searchRQ||'').trim().toLowerCase();
+  const list=S.receivedEstimates;
+  const filtered=list.map((r,i)=>({r,i})).filter(({r})=>{
+    if(!q)return true;
+    return (r.supplier||'').toLowerCase().includes(q)
+      ||(r.date||'').includes(q)
+      ||(r.amount||'').replace(/,/g,'').includes(q.replace(/,/g,''))
+      ||(r.memo||'').toLowerCase().includes(q)
+      ||(r.registrant||'').toLowerCase().includes(q)
+      ||(r.type||'').toLowerCase().includes(q);
+  });
+
+  const cards=filtered.map(({r,i})=>{
+    const dateStr=r.date?r.date.replace(/-/g,'/'):'';
+    return`
+    <div class="est-card" style="cursor:default;align-items:flex-start;gap:12px">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+          <span style="font-size:14px;font-weight:600;color:#1a2a44">${r.supplier||'（取引先未入力）'}</span>
+          ${r.type?`<span class="badge ${r.type==='shio'?'b-shio':r.type==='nai'?'b-nai':r.type==='kaisou'?'b-kaisou':''}"><i class="ti ${r.type==='shio'?'ti-box':r.type==='nai'?'ti-building-warehouse':'ti-ship'}" style="font-size:10px"></i>${{shio:'塩（外販）',nai:'内販',kaisou:'回漕'}[r.type]||r.type}</span>`:''}
+          ${r.registrant?`<span style="font-size:11px;background:#e8eef7;color:#1a3a6b;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-user" style="font-size:10px"></i>${r.registrant}</span>`:''}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px">
+          ${dateStr?`<span style="font-size:11px;color:#1a3a6b;background:#dce8f8;border:1px solid #b5cce8;padding:2px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:3px;font-weight:600"><i class="ti ti-calendar-event" style="font-size:11px"></i>見積日：${dateStr}</span>`:''}
+          ${r.savedAt?`<span style="font-size:11px;color:#1b6b3a;background:#d8f0e3;border:1px solid #8dd4ab;padding:2px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-calendar-plus" style="font-size:11px"></i>登録：${r.savedAt}</span>`:''}
+          ${r.updatedAt?`<span style="font-size:11px;color:#7a4f00;background:#fef3d0;border:1px solid #f0c84a;padding:2px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:3px"><i class="ti ti-calendar-check" style="font-size:11px"></i>最終修正：${r.updatedAt}</span>`:''}
+        </div>
+        ${r.amount?`<div style="font-size:15px;font-weight:600;color:#1a3a6b;margin-bottom:4px">¥ ${Number(r.amount.replace(/,/g,'')||0).toLocaleString('ja-JP')}</div>`:''}
+        ${r.memo?`<div style="font-size:12px;color:#666;line-height:1.6;white-space:pre-wrap;background:#f8fafd;border-left:3px solid #c8d4e8;padding:4px 10px;border-radius:0 4px 4px 0;margin-top:2px">${r.memo}</div>`:''}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0">
+        <button class="btn sm" onclick="editReceived(${i})"><i class="ti ti-edit"></i>修正</button>
+        <button class="btn sm pdf" onclick="viewReceivedPDF(${i})"><i class="ti ti-eye"></i>表示</button>
+        <button class="btn sm" onclick="downloadReceivedPDF(${i})"><i class="ti ti-download"></i>ダウンロード</button>
+        <button class="btn sm danger" onclick="delReceived(${i})"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>`}).join('');
+
+  const noResult=filtered.length===0&&q
+    ?`<div class="empty" style="padding:32px 20px"><i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px;opacity:.3"></i>「${q}」に一致する見積書はありません</div>`
+    :filtered.length===0
+    ?`<div class="empty"><i class="ti ti-inbox"></i>受領した見積書がまだありません<br><small style="font-size:12px;color:#aaa;margin-top:6px;display:block">下の「＋ PDFを追加」ボタンからアップロードしてください</small></div>`
+    :'';
+
+  return`
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <span class="received-count" style="font-size:13px;color:#666">${filtered.length}件${q?'／'+list.length+'件中':''}</span>
+    <button class="btn primary" onclick="openAddReceived()"><i class="ti ti-plus"></i>PDFを追加</button>
+  </div>
+  <div style="position:relative;margin-bottom:12px">
+    <i class="ti ti-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#8a9ab5;font-size:15px;pointer-events:none"></i>
+    <input type="text" id="searchRQBox" value="${S.searchRQ||''}" oninput="S.searchRQ=this.value;renderReceivedInPlace()" placeholder="取引先名・日付・金額・種別（塩/内販/回漕）・メモ・登録者で検索…" style="padding:8px 10px 8px 34px;border:1px solid #c8d4e0;border-radius:8px;width:100%;font-size:13px;font-family:inherit;color:#222;background:#fff" onfocus="this.style.borderColor='#1a3a6b'" onblur="this.style.borderColor='#c8d4e0'">
+    ${q?`<button onclick="S.searchRQ='';render()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:#8a9ab5;font-size:18px;line-height:1">×</button>`:''}
+  </div>
+  <div class="list-panel" id="receivedPanel">${cards}${noResult}</div>
+
+  <!-- 追加・修正モーダル -->
+  <div id="addReceivedModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;overflow-y:auto" onclick="if(event.target===this)closeAddReceived()">
+    <div style="background:#fff;border-radius:12px;padding:24px;width:480px;max-width:95vw;box-shadow:0 8px 32px rgba(0,0,0,.18);margin:20px auto">
+      <div style="font-size:15px;font-weight:500;color:#1a3a6b;margin-bottom:16px;display:flex;align-items:center;gap:8px"><i id="modalIcon" class="ti ti-file-upload"></i><span id="modalTitle">受領見積書を追加</span></div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label>PDFファイル <span id="pdfRequired" style="color:#c0392b">*</span><span id="pdfOptional" style="color:#888;font-size:11px;display:none">（変更する場合のみ選択）</span></label>
+        <div id="dropZone" style="border:2px dashed #c8d4e0;border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfc" onclick="document.getElementById('pdfFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='#1a3a6b';this.style.background='#f0f4fc'" ondragleave="this.style.borderColor='#c8d4e0';this.style.background='#fafbfc'" ondrop="handlePDFDrop(event)">
+          <i class="ti ti-cloud-upload" style="font-size:28px;color:#8a9ab5;display:block;margin-bottom:6px"></i>
+          <div id="dropLabel" style="font-size:13px;color:#666">クリックまたはドラッグ＆ドロップでPDFを選択</div>
+        </div>
+        <input type="file" id="pdfFileInput" accept=".pdf" style="display:none" onchange="handlePDFSelect(this)">
+      </div>
+      <div class="form-grid" style="margin-bottom:10px">
+        <div class="form-group"><label>取引先名 <span style="color:#c0392b">*</span></label><input type="text" id="rSupplier" placeholder="例：○○株式会社"></div>
+        <div class="form-group"><label>日付</label><input type="date" id="rDate"></div>
+      </div>
+      <div class="form-grid" style="margin-bottom:10px">
+        <div class="form-group"><label>種別</label><select id="rType"><option value="">（未選択）</option><option value="shio">塩（外販）</option><option value="nai">内販</option><option value="kaisou">回漕</option></select></div>
+        <div class="form-group"><label>登録者</label><input type="text" id="rRegistrant" placeholder="例：山田太郎"></div>
+      </div>
+      <div class="form-grid" style="margin-bottom:10px">
+        <div class="form-group"><label>金額（円）</label><input type="text" id="rAmount" placeholder="例：1,234,000"></div>
+        <div class="form-group"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>メモ</label>
+        <textarea id="rMemo" rows="3" placeholder="備考・内容など"></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn" onclick="closeAddReceived()">キャンセル</button>
+        <button class="btn primary" onclick="saveReceived()"><i class="ti ti-device-floppy"></i>保存</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+let _pendingPDFData=null;
+let _pendingPDFName=null;
+let _editReceivedIdx=null;
+
+function openAddReceived(){
+  _pendingPDFData=null;_pendingPDFName=null;_editReceivedIdx=null;
+  const m=document.getElementById('addReceivedModal');
+  if(!m)return;
+  m.style.display='flex';
+  document.getElementById('modalIcon').className='ti ti-file-upload';
+  document.getElementById('modalTitle').textContent='受領見積書を追加';
+  document.getElementById('pdfRequired').style.display='';
+  document.getElementById('pdfOptional').style.display='none';
+  document.getElementById('rSupplier').value='';
+  document.getElementById('rDate').value=today();
+  document.getElementById('rAmount').value='';
+  document.getElementById('rType').value='';
+  document.getElementById('rRegistrant').value='';
+  document.getElementById('rMemo').value='';
+  document.getElementById('dropLabel').textContent='クリックまたはドラッグ＆ドロップでPDFを選択';
+  const dz=document.getElementById('dropZone');
+  if(dz){dz.style.borderColor='#c8d4e0';dz.style.background='#fafbfc';}
+  const fi=document.getElementById('pdfFileInput');
+  if(fi)fi.value='';
+}
+function editReceived(i){
+  const r=S.receivedEstimates[i];
+  _pendingPDFData=null;_pendingPDFName=null;_editReceivedIdx=i;
+  const m=document.getElementById('addReceivedModal');
+  if(!m)return;
+  m.style.display='flex';
+  document.getElementById('modalIcon').className='ti ti-edit';
+  document.getElementById('modalTitle').textContent='受領見積書を修正';
+  document.getElementById('pdfRequired').style.display='none';
+  document.getElementById('pdfOptional').style.display='';
+  document.getElementById('rSupplier').value=r.supplier||'';  document.getElementById('rDate').value=r.date||today();
+  document.getElementById('rAmount').value=r.amount||'';  document.getElementById('rType').value=r.type||'';  document.getElementById('rRegistrant').value=r.registrant||'';  document.getElementById('rMemo').value=r.memo||'';
+  const lbl=document.getElementById('dropLabel');
+  if(lbl)lbl.innerHTML=r.fileName?`<i class="ti ti-file-text" style="color:#1a3a6b"></i> ${r.fileName}（登録済み）`
+    :'クリックまたはドラッグ＆ドロップで新しいPDFを選択';
+  const dz=document.getElementById('dropZone');
+  if(dz){dz.style.borderColor=r.fileName?'#1a3a6b':'#c8d4e0';dz.style.background=r.fileName?'#f0f4fc':'#fafbfc';}
+  const fi=document.getElementById('pdfFileInput');
+  if(fi)fi.value='';
+}
+function closeAddReceived(){
+  const m=document.getElementById('addReceivedModal');
+  if(m)m.style.display='none';
+  _editReceivedIdx=null;
+}
+function handlePDFDrop(ev){
+  ev.preventDefault();
+  const dz=document.getElementById('dropZone');
+  dz.style.borderColor='#c8d4e0';dz.style.background='#fafbfc';
+  const file=ev.dataTransfer.files[0];
+  if(file&&file.type==='application/pdf')loadPDFFile(file);
+  else alert('PDFファイルを選択してください');
+}
+function handlePDFSelect(input){
+  const file=input.files[0];
+  if(file)loadPDFFile(file);
+}
+function loadPDFFile(file){
+  const reader=new FileReader();
+  reader.onload=function(e){
+    _pendingPDFData=e.target.result;
+    _pendingPDFName=file.name;
+    const lbl=document.getElementById('dropLabel');
+    if(lbl)lbl.innerHTML=`<i class="ti ti-check" style="color:#27ae60"></i> ${file.name} （${(file.size/1024).toFixed(0)} KB）`;
+    const dz=document.getElementById('dropZone');
+    if(dz){dz.style.borderColor='#27ae60';dz.style.background='#f0faf4';}
+  };
+  reader.readAsDataURL(file);
+}
+function saveReceived(){
+  const isEdit=_editReceivedIdx!==null;
+  if(!isEdit&&!_pendingPDFData){alert('PDFファイルを選択してください');return;}
+  const supplier=document.getElementById('rSupplier').value.trim();
+  if(!supplier){alert('取引先名を入力してください');return;}
+  if(isEdit){
+    const r=S.receivedEstimates[_editReceivedIdx];
+    r.supplier=supplier;
+    r.date=document.getElementById('rDate').value;
+    r.amount=document.getElementById('rAmount').value.trim();
+    r.type=document.getElementById('rType').value;
+    r.registrant=document.getElementById('rRegistrant').value.trim();
+    r.memo=document.getElementById('rMemo').value.trim();
+    if(_pendingPDFData){r.pdfData=_pendingPDFData;r.fileName=_pendingPDFName;}
+    r.updatedAt=nowJST();
+  }else{
+    const entry={
+      supplier,
+      date:document.getElementById('rDate').value,
+      amount:document.getElementById('rAmount').value.trim(),
+      type:document.getElementById('rType').value,
+      registrant:document.getElementById('rRegistrant').value.trim(),
+      memo:document.getElementById('rMemo').value.trim(),
+      fileName:_pendingPDFName,
+      pdfData:_pendingPDFData,
+      savedAt:nowJST()
+    };
+    S.receivedEstimates.unshift(entry);
+  }
+  svR();
+  closeAddReceived();
+  render();
+}
+function delReceived(i){
+  if(!confirm('削除しますか？'))return;
+  S.receivedEstimates.splice(i,1);
+  svR();render();
+}
+function viewReceivedPDF(i){
+  const r=S.receivedEstimates[i];
+  if(!r||!r.pdfData)return;
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>${r.supplier} - ${r.date}</title><style>body,html{margin:0;padding:0;height:100%;background:#555}iframe{width:100%;height:100%;border:none}</style></head><body><iframe src="${r.pdfData}"></iframe></body></html>`);
+  w.document.close();
+}
+function downloadReceivedPDF(i){
+  const r=S.receivedEstimates[i];
+  if(!r||!r.pdfData)return;
+  const a=document.createElement('a');
+  a.href=r.pdfData;
+  a.download=r.fileName||'見積書.pdf';
+  a.click();
+}
+
+
+
+function renderHelp(){
+  function sec(icon,title,rows){
+    return '<div class="card" style="margin-bottom:0">'
+      +'<div class="card-head"><i class="ti '+icon+'"></i>'+title+'</div>'
+      +'<div style="font-size:13px;color:#333;line-height:1.9">'+rows+'</div>'
+      +'</div>';
+  }
+  function row(label,desc){
+    return '<div style="display:flex;gap:0;border-bottom:1px solid #f0f4fa;padding:9px 0;align-items:flex-start">'
+      +'<div style="min-width:160px;font-weight:500;color:#1a3a6b;font-size:12px;padding-top:1px;flex-shrink:0">'+label+'</div>'
+      +'<div style="color:#444;font-size:13px;line-height:1.8;flex:1">'+desc+'</div>'
+      +'</div>';
+  }
+  function note(txt){
+    return '<div style="background:#fffbe6;border-left:3px solid #f0a500;padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:#7a5c00;margin-top:8px;line-height:1.7">'+txt+'</div>';
+  }
+  function info(txt){
+    return '<div style="background:#eaf3ff;border-left:3px solid #1a3a6b;padding:8px 12px;border-radius:0 6px 6px 0;font-size:12px;color:#1a3a6b;margin-top:8px;line-height:1.7">'+txt+'</div>';
+  }
+  function btn(txt){
+    return '<span style="display:inline-flex;align-items:center;gap:3px;background:#e8eef7;color:#1a3a6b;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:500">'+txt+'</span>';
+  }
+  function badge(txt,cls){
+    return '<span class="badge b-'+cls+'" style="font-size:11px;vertical-align:middle">'+txt+'</span>';
+  }
+
+  // ── はじめに（クイックスタート）
+  var intro='<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,.06)">'
+    +'<div style="font-size:14px;font-weight:500;color:#1a3a6b;margin-bottom:14px;display:flex;align-items:center;gap:6px"><i class="ti ti-rocket" style="font-size:16px"></i>はじめて使う方へ　― 基本の流れ</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">'
+    +step('1','ti-file-plus','見積書を作る','「新規作成」タブを開き、種別を選んで内容を入力。最後に「保存」を押す。')
+    +step('2','ti-list-details','一覧で確認','「見積一覧」タブに保存した見積書が並ぶ。クリックすると内容を確認できる。')
+    +step('3','ti-printer','PDFで出力','見積書カードの「PDF印刷」ボタンを押すと印刷ダイアログが開く。')
+    +step('4','ti-receipt','関連書類も作成','受領書・納品書は同じ見積データから自動生成できる。')
+    +'</div>'
+    +info('💡 データはこのブラウザにのみ保存されます。別のPCや別のブラウザでは表示されませんのでご注意ください。')
+    +'</div>';
+
+  function step(num,icon,title,desc){
+    return '<div style="background:#f5f8fc;border-radius:8px;padding:14px 12px;display:flex;flex-direction:column;gap:8px">'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<div style="width:24px;height:24px;background:#1a3a6b;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0">'+num+'</div>'
+      +'<i class="ti '+icon+'" style="font-size:18px;color:#1a3a6b"></i>'
+      +'<div style="font-size:12px;font-weight:500;color:#1a3a6b">'+title+'</div>'
+      +'</div>'
+      +'<div style="font-size:12px;color:#555;line-height:1.7">'+desc+'</div>'
+      +'</div>';
+  }
+
+  // ── ① 見積一覧
+  var s1=sec('ti-list-details','① 見積一覧',
+    row('この画面でできること','保存済みの見積書をまとめて確認できます。見積番号・宛先・種別・日付・金額・作成者が一目でわかります。')
+    +row('見積書を開く','カードをクリックすると内容を閲覧できます（閲覧モード）。修正したい場合は右上の「修正する」ボタンを押してください。')
+    +row('絞り込み検索','画面上部の検索ボックスに文字を入力すると、<b>会社名・見積番号・日付・金額・作成者・種別（塩・内販・回漕）</b> をリアルタイムで絞り込みます。「×」で検索をクリアできます。')
+    +row('種別バッジの見方',badge('塩（外販）','shio')+' '+badge('内販','nai')+' '+badge('回漕','kaisou')+'　の3種類があります。回漕は海上運賃①＋②の合計金額を表示します。')
+    +row('作成者バッジ','基本情報の「作成」欄に名前を入力すると、カードにバッジ表示されます。誰が作った見積書か一目でわかります。')
+    +'<div style="border-bottom:1px solid #f0f4fa;padding:9px 0">'
+    +'<div style="font-weight:500;color:#1a3a6b;font-size:12px;margin-bottom:8px">各ボタンの役割</div>'
+    +'<div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#444">'
+    +'<div>'+btn('✏ カードをクリック')+'　内容を閲覧します（閲覧モード）。修正は「修正する」ボタンから。</div>'
+    +'<div>'+btn('修正')+'　内容を編集できます。</div>'
+    +'<div>'+btn('📋 コピー')+'　内容をそのまま複製して新しい見積書を作成します。見積番号・日付は自動で更新されます。よく似た見積書を作る際に便利です。</div>'
+    +'<div>'+btn('🖨 PDF印刷')+'　その見積書をPDFで印刷します。</div>'
+    +'<div>'+btn('🗑 削除')+'　確認ダイアログの後に削除します。<b>削除したデータは元に戻せません。</b></div>'
+    +'</div>'
+    +'</div>'
+  );
+
+  // ── ② 新規作成
+  var s2=sec('ti-file-plus','② 新規作成',
+    row('基本の流れ','「新規作成」タブを押すと <b>種別選択画面</b> が表示されます。種別を選ぶと入力フォームが開きます。入力後に「保存」を押すと見積一覧に追加されます。')
+    +row('種別の選び方',
+      badge('塩（外販）','shio')+'　外販向け塩の見積書。受渡期限・納期・発注ロット・受渡条件などを入力します。<br>'
+      +badge('内販','nai')+'　内販向け商品の見積書。納期・受渡場所・発注ロット・受渡条件などを入力します。<br>'
+      +badge('回漕','kaisou')+'　海上輸送の見積書。使用船舶・航路・海上運賃①②などを入力します。')
+    +row('見積番号について','種別・年月・連番から <b>自動で生成</b> されます（例：260617-901）。手動では変更できません。')
+    +'<div style="border-bottom:1px solid #f0f4fa;padding:9px 0">'
+    +'<div style="font-weight:500;color:#1a3a6b;font-size:12px;margin-bottom:8px">入力項目の説明</div>'
+    +'<div style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:#444;line-height:1.8">'
+    +'<div><b>基本情報</b>　作成日・宛先（会社名）・照会番号。承認・調査・作成の担当者名も入力できます。「作成」欄はPDFと一覧の両方に反映されます。</div>'
+    +'<div><b>条件</b>　種別ごとの取引条件を入力します。各項目は2行まで入力できます。「その他」欄は自由記述です。</div>'
+    +'<div><b>品目明細</b>（塩・内販のみ）　品名・規格・数量・単位・単価を入力すると金額が自動計算されます。「行追加」で複数行入力できます。</div>'
+    +'<div><b>海上輸送詳細</b>（回漕のみ）　使用船舶・航路・海上運賃①②・付帯条件を入力します。運賃の隣に「（船腹）」などの補足メモも書けます。</div>'
+    +'<div><b>備考</b>　PDF下部に印刷される注記欄です。</div>'
+    +'</div>'
+    +'</div>'
+    +row(btn('💾 保存'),'入力内容をブラウザに保存します。保存後は「見積一覧」に反映されます。<b>保存を押さないとデータが消えます。</b>')
+    +row(btn('🖨 PDF印刷'),'編集中の内容を印刷します。保存前でも印刷できます。')
+    +row(btn('一覧へ戻る'),'保存せずに一覧へ戻ります。入力途中の内容は失われますのでご注意ください。')
+    +note('⚠ 「新規作成」タブを押すと、毎回種別選択画面からスタートします。作成途中の場合は必ず先に「保存」してから他のタブへ移動してください。')
+  );
+
+  // ── ③ 受領書・納品書
+  var s3=sec('ti-receipt','③ 受領書 ／ 納品書',
+    row('この画面でできること','保存済みの見積書をもとに、<b>受領書</b> または <b>納品書</b> を自動生成して印刷できます。新たに内容を入力する必要はありません。')
+    +row('使い方',
+      '① 画面左の一覧から対象の見積書を選択します。<br>'
+      +'② 右側にプレビューが表示されます。内容を確認してください。<br>'
+      +'③ 「PDF印刷」ボタンを押すと印刷ダイアログが開きます。')
+    +row('受領書','「下記の通り確かに受領致しました。」の挨拶文が自動で入ります。')
+    +row('納品書','「下記の通り納品致しましたので、ご査収のほどよろしくお願い申し上げます。」の挨拶文が自動で入ります。')
+    +note('⚠ 先に「新規作成」で見積書を作成・保存してからご利用ください。見積書が1件もない場合は書類を生成できません。')
+  );
+
+  // ── ④ 受領見積書
+  var s4=sec('ti-inbox','④ 受領見積書',
+    row('この画面でできること','取引先から受け取ったPDFの見積書を登録・管理します。ファイルをシステム内で保管し、いつでも確認・ダウンロードできます。')
+    +row('PDFを登録する方法',
+      '① 右上の '+btn('＋ PDFを追加')+' を押します。<br>'
+      +'② 開いたウィンドウで、PDFをドラッグ＆ドロップするかクリックして選択します。<br>'
+      +'③ 取引先名（必須）・日付・金額・登録者・メモを入力して保存します。')
+    +row('絞り込み検索','<b>取引先名・日付・金額・種別（塩・内販・回漕）・メモ・登録者</b> で検索できます。')
+    +'<div style="border-bottom:1px solid #f0f4fa;padding:9px 0">'
+    +'<div style="font-weight:500;color:#1a3a6b;font-size:12px;margin-bottom:8px">各ボタンの役割</div>'
+    +'<div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#444">'
+    +'<div>'+btn('✏ 修正')+'　取引先名・日付・金額・登録者・メモを編集できます。PDFを差し替えたい場合のみ再選択します。</div>'
+    +'<div>'+btn('👁 表示')+'　PDFを新しいタブでプレビュー表示します。</div>'
+    +'<div>'+btn('⬇ ダウンロード')+'　PDFを元のファイル名でダウンロードします。</div>'
+    +'<div>'+btn('🗑 削除')+'　確認後に削除します。元に戻せません。</div>'
+    +'</div>'
+    +'</div>'
+    +note('⚠ PDFデータもブラウザ内に保存されます。ファイルサイズが大きい場合（目安：数MB以上）は保存できないことがあります。その場合はメモのみ記録し、PDFは別途フォルダで管理してください。')
+  );
+
+  // ── ⑤ データの管理
+  var s5=sec('ti-database','⑤ データの管理について',
+    row('保存場所','すべてのデータはお使いのブラウザの内部（localStorage）に保存されます。サーバーへの送信は行いません。インターネットが切れていても使用できます。')
+    +row('保存のタイミング','「保存」ボタンを押したときだけ保存されます。入力途中で他のタブに移動したり画面を閉じると、<b>保存していない内容は消えます。</b>こまめに保存してください。')
+    +row('別のPCへの引き継ぎ','現在、別のPC・ブラウザへデータを移す機能はありません。このシステムを開いているブラウザでのみデータが表示されます。')
+    +row('データが消えるケース',
+      '以下の操作を行うとデータが失われます。ご注意ください。<br>'
+      +'・ブラウザのキャッシュ・Cookieを「すべて削除」した場合<br>'
+      +'・シークレットモード（プライベートモード）でブラウザを閉じた場合<br>'
+      +'・ブラウザをアンインストールした場合')
+    +note('💡 大切な見積書は定期的に「PDF印刷」で紙またはPDFファイルとして保存しておくことをおすすめします。')
+  );
+
+  return '<div style="max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:16px">'
+    +'<div style="background:linear-gradient(135deg,#1a3a6b 0%,#2a5298 100%);border-radius:12px;padding:22px 28px;color:#fff">'
+    +'<div style="font-size:18px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:10px"><i class="ti ti-help-circle" style="font-size:22px"></i>操作手順・機能説明</div>'
+    +'<div style="font-size:13px;opacity:.85;line-height:1.7">共栄商事　見積管理システムの使い方をまとめています。はじめての方はまず「基本の流れ」をご確認ください。</div>'
+    +'</div>'
+    +intro
+    +s1+s2+s3+s4+s5
+    +'</div>';
+}
+
+showLogin();
+</script>
